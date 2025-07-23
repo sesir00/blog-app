@@ -21,12 +21,13 @@ namespace BlogAPI.Services
             _mapper = mapper;
         }
 
-        public async Task CreateBlogAsync(CreateBlogRequest request)
+        public async Task CreateBlogAsync(CreateBlogRequest request, string? imagePath = null)
         {
             try
             {
                 var blog = _mapper.Map<Blog>(request);
                 blog.CreatedAt = DateTime.UtcNow;
+                blog.ImageUrl = imagePath;
                 _context.Blogs.Add(blog);
                 await _context.SaveChangesAsync();
             }
@@ -57,7 +58,7 @@ namespace BlogAPI.Services
             return blog;
         }
 
-        public async Task UpdateBlogAsync(Guid id, UpdateBlogRequest request)
+        public async Task UpdateBlogAsync(Guid id, UpdateBlogRequest request, string? imagePath = null)
         {
             try
             {
@@ -73,6 +74,8 @@ namespace BlogAPI.Services
                     blog.Content = request.Content;
                 if (request.IsPublished != null)
                     blog.IsPublished = request.IsPublished.Value;
+                if (imagePath != null)
+                    blog.ImageUrl = imagePath;                      //update image if provided.
 
                 blog.UpdatedAt = DateTime.UtcNow;
                 await _context.SaveChangesAsync();

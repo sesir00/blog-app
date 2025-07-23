@@ -36,6 +36,10 @@ namespace BlogAPI.AppDataContext
             modelBuilder.Entity<Blog>()
                 .ToTable("Blogs")
                 .HasKey(x => x.Id);
+
+            modelBuilder.Entity<Blog>()
+                .Property(x => x.ImageUrl)
+                .IsRequired(false);
         }
     }
 }

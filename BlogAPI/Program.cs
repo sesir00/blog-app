@@ -42,6 +42,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 app.UseExceptionHandler(errorApp =>             //In .NET 9 (ASP.NET Core), when you use: app.UseExceptionHandler() You must provide a configuration:
 {
     errorApp.Run(async context =>

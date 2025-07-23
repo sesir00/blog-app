@@ -13,6 +13,7 @@ namespace BlogAPI.Models
         [StringLength(1000)]
         public string Content { get; set; }
         public bool IsPublished { get; set; }
+        public string? ImageUrl { get; set; } // New property for image path or URL
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 

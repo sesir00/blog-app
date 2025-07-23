@@ -1,12 +1,1 @@
-{
-  "Version": 1,
-  "Hash": "BSm+F3DVwvqnwRQCEpQSO8uZS5tM03ej8onbXXRnKZI=",
-  "Source": "BlogAPI",
-  "BasePath": "_content/BlogAPI",
-  "Mode": "Default",
-  "ManifestType": "Build",
-  "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": [],
-  "Endpoints": []
-}
+{"Version":1,"Hash":"uePgJueggxGxkHarSqiBHHGqEgnzIJ8yK/B1jpYklUA=","Source":"BlogAPI","BasePath":"_content/BlogAPI","Mode":"Default","ManifestType":"Build","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[{"Name":"BlogAPI\\wwwroot","Source":"BlogAPI","ContentRoot":"D:\\blog-app\\BlogAPI\\wwwroot\\","BasePath":"_content/BlogAPI","Pattern":"**"}],"Assets":[],"Endpoints":[]}
