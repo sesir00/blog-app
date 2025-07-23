@@ -1,5 +1,8 @@
 using BlogAPI.AppDataContext;
+using BlogAPI.Middleware;
 using BlogAPI.Models;
+using BlogAPI.Services;
+using BlogAPI.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +14,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+builder.Services.AddLogging();
+
+builder.Services.AddScoped<IBlogService, BlogService>();
 
 builder.Services.Configure<DbSettings>(builder.Configuration.GetSection("DbSettings"));
 builder.Services.AddSingleton<BlogDbContext>();

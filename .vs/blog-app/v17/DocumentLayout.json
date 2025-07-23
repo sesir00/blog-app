@@ -1,0 +1,54 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\blog-app\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{FDC53E20-1ADF-7C7D-1FE1-5874878FD458}|BlogAPI\\BlogAPI.csproj|d:\\blog-app\\blogapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FDC53E20-1ADF-7C7D-1FE1-5874878FD458}|BlogAPI\\BlogAPI.csproj|solutionrelative:blogapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FDC53E20-1ADF-7C7D-1FE1-5874878FD458}|BlogAPI\\BlogAPI.csproj|d:\\blog-app\\blogapi\\middleware\\globalexceptionhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FDC53E20-1ADF-7C7D-1FE1-5874878FD458}|BlogAPI\\BlogAPI.csproj|solutionrelative:blogapi\\middleware\\globalexceptionhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\blog-app\\BlogAPI\\Program.cs",
+              "RelativeDocumentMoniker": "BlogAPI\\Program.cs",
+              "ToolTip": "D:\\blog-app\\BlogAPI\\Program.cs",
+              "RelativeToolTip": "BlogAPI\\Program.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAAABEAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-13T14:44:18.632Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GlobalExceptionHandler.cs",
+              "DocumentMoniker": "D:\\blog-app\\BlogAPI\\Middleware\\GlobalExceptionHandler.cs",
+              "RelativeDocumentMoniker": "BlogAPI\\Middleware\\GlobalExceptionHandler.cs",
+              "ToolTip": "D:\\blog-app\\BlogAPI\\Middleware\\GlobalExceptionHandler.cs",
+              "RelativeToolTip": "BlogAPI\\Middleware\\GlobalExceptionHandler.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAA1wAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-13T13:09:15.059Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

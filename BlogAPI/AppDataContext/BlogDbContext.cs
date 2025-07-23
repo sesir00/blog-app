@@ -1,4 +1,4 @@
-// AppDataContext/BlogDbContext.cs
+// BlogDbContext.cs
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using BlogAPI.Models;
@@ -7,18 +7,28 @@ namespace BlogAPI.AppDataContext
 {
     public class BlogDbContext : DbContext
     {
-        private readonly DbSettings _dbSettings;
+        private readonly string _connectionString;
 
+        // Constructor used by the app
         public BlogDbContext(IOptions<DbSettings> dbSettings)
         {
-            _dbSettings = dbSettings.Value;
+            _connectionString = dbSettings.Value.ConnectionString;
+        }
+
+        // Constructor used by EF CLI
+        public BlogDbContext(DbContextOptions<BlogDbContext> options)
+            : base(options)
+        {
         }
 
         public DbSet<Blog> Blogs { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(_dbSettings.ConnectionString);
+            if (!optionsBuilder.IsConfigured && !string.IsNullOrEmpty(_connectionString))
+            {
+                optionsBuilder.UseSqlServer(_connectionString);
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
