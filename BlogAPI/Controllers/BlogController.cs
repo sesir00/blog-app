@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using BlogAPI.Contracts;
 using BlogAPI.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlogAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class BlogController : ControllerBase
     {
         private readonly IBlogService _blogService;         //your interface for blog operations like create, update, delete.
@@ -49,6 +51,7 @@ namespace BlogAPI.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllAsync()
         {
             try
