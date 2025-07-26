@@ -14,5 +14,7 @@ namespace BlogAPI.Contracts
 
         [Required]
         public bool IsPublished { get; set; }
+        
+        // Image file will be handled separately in the controller
     }
 }

@@ -31,6 +31,12 @@ namespace BlogAPI.Middleware
                     errorResponse.StatusCode = (int)HttpStatusCode.BadRequest;
                     errorResponse.Title = exception.GetType().Name;
                     break;
+                case UnauthorizedAccessException:
+                    errorResponse.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    break;
+                case KeyNotFoundException:
+                    errorResponse.StatusCode = (int)HttpStatusCode.NotFound;
+                    break;
                 default:
                     errorResponse.StatusCode = (int)HttpStatusCode.InternalServerError;
                     errorResponse.Title = "Internal Server Error";

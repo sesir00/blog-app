@@ -165,3 +165,8 @@ D:\blog-app\BlogAPI\obj\Debug\net9.0\rjimswa.dswa.cache.json
 D:\blog-app\BlogAPI\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
 D:\blog-app\BlogAPI\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
 D:\blog-app\BlogAPI\obj\Debug\net9.0\staticwebassets.build.json.cache
+D:\blog-app\BlogAPI\bin\Debug\net9.0\BlogAPI.staticwebassets.runtime.json
+D:\blog-app\BlogAPI\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\blog-app\BlogAPI\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+D:\blog-app\BlogAPI\bin\Debug\net9.0\BCrypt.Net-Next.dll
+D:\blog-app\BlogAPI\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
