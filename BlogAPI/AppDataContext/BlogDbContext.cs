@@ -23,6 +23,7 @@ namespace BlogAPI.AppDataContext
 
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<UserModel> Users { get; set; }
+        public DbSet<CommentModel> Comments { get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
@@ -50,6 +51,22 @@ namespace BlogAPI.AppDataContext
                 //.Property(u => u.Role)
                 //.HasConversion<string>()
                 //.HasMaxLength(20);
+
+            modelBuilder.Entity<CommentModel>()
+                .ToTable("Comments")
+                .HasKey(c => c.Id);
+
+            modelBuilder.Entity<CommentModel>()
+                .HasOne(c => c.Blog)
+                .WithMany(b => b.Comments) // Assuming Blog has a collection of Comments
+                .HasForeignKey(c => c.BlogId)
+                .OnDelete(DeleteBehavior.Cascade);  //If a Blog is deleted, its related Comments will be deleted automatically (cascade delete).
+
+            modelBuilder.Entity<CommentModel>()
+                .HasOne(c => c.User)
+                .WithMany()
+                .HasForeignKey(c =>c.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

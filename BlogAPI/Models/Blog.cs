@@ -16,10 +16,11 @@ namespace BlogAPI.Models
         public string? ImageUrl { get; set; } // New property for image path or URL
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public List<CommentModel> Comments { get; set; } = new List<CommentModel>(); //Navigation property
 
         public Blog()
         {
-            IsPublished = false;
+            IsPublished = true;
         }
     }
 }
