@@ -50,6 +50,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<IBlogService, BlogService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
 
 // 6. Configure Exception Handling and Logging
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -67,7 +68,7 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
-        policy.WithOrigins("http://localhost:3000")
+        policy.WithOrigins("http://localhost:5173")
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials());

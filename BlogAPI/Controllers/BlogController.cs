@@ -21,6 +21,8 @@ namespace BlogAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
+
         public async Task<IActionResult> CreateBlogAsync([FromForm] CreateBlogRequest request, IFormFile? image)
         {
             if (!ModelState.IsValid)
@@ -80,6 +82,8 @@ namespace BlogAPI.Controllers
         }
 
         [HttpPut("{id:guid}")]
+        [Authorize(Roles = "admin")]
+
         public async Task<IActionResult> UpdateBlogAsync(Guid id, [FromForm] UpdateBlogRequest request, IFormFile? image)
         {
             if (!ModelState.IsValid)
@@ -110,6 +114,7 @@ namespace BlogAPI.Controllers
         }
 
         [HttpDelete("{id:guid}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteBlogAsync(Guid id)
         {
             try

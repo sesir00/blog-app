@@ -12,8 +12,7 @@ namespace BlogAPI.Contracts
         [StringLength(1000)]
         public string Content { get; set; }
 
-        [Required]
-        public bool IsPublished { get; set; }
+        public bool IsPublished { get; set; } = true;
         
         // Image file will be handled separately in the controller
     }
