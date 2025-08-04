@@ -54,16 +54,24 @@ namespace BlogAPI.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAllAsync()
+        public async Task<IActionResult> GetAllAsync([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
-                var blogs = await _blogService.GetAllAsync();
-                return Ok(new { message = "Successfully retrieved all blog posts.", data = blogs });
+                var blogs = await _blogService.GetAllAsync(pageNumber, pageSize);
+                return Ok(new 
+                { 
+                    message = "Paginated blog posts retrieved successfully.",
+                    data = blogs.Data,
+                    pageNumber = blogs.PageNumber,
+                    pageSize = blogs.PageSize,
+                    totalCount = blogs.TotalCount,
+                    totalPages = blogs.TotalPages
+                });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "No blog posts found.", error = ex.Message });
+                return StatusCode(500, new { message = "Error retrieving paginated blog posts.", error = ex.Message });
             }
         }
 

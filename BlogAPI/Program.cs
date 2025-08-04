@@ -96,9 +96,11 @@ app.UseStaticFiles();
 app.UseCors("AllowReactApp");
 app.UseExceptionHandler();
 
+//app.UseMiddleware<JwtCookieMiddleware>(); // Step 1: Copy jwt from cookie to header
+//app.UseMiddleware<JwtMiddleware>();       // Step 2: Validate token, attach user
+
 app.UseAuthentication();
 app.UseAuthorization();
-//app.UseMiddleware<JwtMiddleware>(); // optional
 
 app.MapControllers();
 app.Run();

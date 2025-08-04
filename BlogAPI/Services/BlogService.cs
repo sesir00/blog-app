@@ -44,32 +44,75 @@ namespace BlogAPI.Services
             }
         }
 
-        public async Task<IEnumerable<BlogDto>> GetAllAsync()
+        public async Task<PaginatedResponse<BlogDto>> GetAllAsync(int pageNumber, int pageSize)
         {
-            var blogs = await _context.Blogs
-                .Include(b => b.Comments) // Include comments
-                .ThenInclude(c => c.User) // if using UserName in CommentDto
-                .ToListAsync();
-            if (blogs == null || !blogs.Any())
+            try
             {
-                throw new Exception("No blog posts found.");
+                var query = _context.Blogs
+                    .Include(b => b.Comments)
+                    .ThenInclude(c => c.User)
+                    .AsQueryable();
+
+                var totalCount = await query.CountAsync();
+
+                var blogs = await query
+                    .OrderByDescending(b => b.CreatedAt)
+                    .Skip((pageNumber -1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+
+                if (blogs == null || !blogs.Any())
+                {
+                    throw new Exception("No blog posts found.");
+                }
+                var blogDtos = _mapper.Map<List<BlogDto>>(blogs);
+                return new PaginatedResponse<BlogDto>
+                {
+                    Data = blogDtos,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                    TotalCount = totalCount
+                };
             }
-            var blogDtos = _mapper.Map<List<BlogDto>>(blogs);
-            return blogDtos;
+            catch (DbUpdateException dbex)
+            {
+                _logger.LogError(dbex, $"DB error while fetching paginated blog post.");
+                throw new Exception("A database error occurred while fetching paginated blog post.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error fetching paginated blog post by user.");
+                throw; 
+            }
+            
         }
 
         public async Task<BlogDto> GetByIdAsync(Guid id)
         {
-            var blog = await _context.Blogs
+            try
+            {
+                var blog = await _context.Blogs
                 .Include(b => b.Comments) // Include comments
                 .ThenInclude(c => c.User) // if using UserName in CommentDto
                 .FirstOrDefaultAsync(b => b.Id == id);
-            if (blog == null)
-            {
-                throw new KeyNotFoundException($"No blog post with Id {id} found.");
+                if (blog == null)
+                {
+                    throw new KeyNotFoundException($"No blog post with Id {id} found.");
+                }
+                var blogDto = _mapper.Map<BlogDto>(blog);
+                return blogDto;
             }
-            var blogDto = _mapper.Map<BlogDto>(blog);
-            return blogDto;
+            catch (DbUpdateException dbex)
+            {
+                _logger.LogError(dbex, $"DB error while fetching blog post by ID.");
+                throw new Exception("A database error occurred while fetching the blog post by ID.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error fetching blog post by ID.");
+                throw; 
+            }
+            
         }
 
         public async Task UpdateBlogAsync(Guid id, UpdateBlogRequest request, string? imagePath = null)
@@ -94,6 +137,11 @@ namespace BlogAPI.Services
                 blog.UpdatedAt = DateTime.UtcNow;
                 await _context.SaveChangesAsync();
             }
+            catch (DbUpdateException dbex)
+            {
+                _logger.LogError(dbex, $"DB error while updating blog post by user.");
+                throw new Exception("A database error occurred while updating the blog post.");
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Error updating blog post with Id {id}.");
@@ -103,13 +151,27 @@ namespace BlogAPI.Services
 
         public async Task DeleteBlogAsync(Guid id)
         {
-            var blog = await _context.Blogs.FindAsync(id);
-            if (blog == null)
+            try
             {
-                throw new KeyNotFoundException($"Blog post with ID {id} not found.");
+                var blog = await _context.Blogs.FindAsync(id);
+                if (blog == null)
+                {
+                    throw new KeyNotFoundException($"Blog post with ID {id} not found.");
+                }
+                _context.Blogs.Remove(blog);
+                await _context.SaveChangesAsync();
             }
-            _context.Blogs.Remove(blog);
-            await _context.SaveChangesAsync();
+            catch (DbUpdateException dbex)
+            {
+                _logger.LogError(dbex, $"DB error while deleting blog post by user.");
+                throw new Exception("A database error occurred while deleting the blog post.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error deleting blog post by user.");
+                throw;
+            }
+            
         }
     }
 }

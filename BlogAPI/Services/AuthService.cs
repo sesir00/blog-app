@@ -71,7 +71,7 @@ namespace BlogAPI.Services
         }
         public async Task<AuthResponseDto> LoginAsync(LoginDto loginDto)
         {
-            if (string.IsNullOrEmpty(loginDto.Username) || string.IsNullOrEmpty(loginDto.Password))
+            if (string.IsNullOrWhiteSpace(loginDto.Username) || string.IsNullOrWhiteSpace(loginDto.Password))
             {
                 throw new BadHttpRequestException("Username or Password cannot be empty or whitespace.");
             }
@@ -81,17 +81,23 @@ namespace BlogAPI.Services
                 var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == loginDto.Username);
                 if (user == null || !user.IsActive) 
                 {
-                    throw new UnauthorizedAccessException("Invalid Credentials!!"); 
+                    throw new UnauthorizedAccessException("Invalid username or password."); 
                 }
+
                 //verify password
                 if (!BCrypt.Net.BCrypt.Verify(loginDto.Password, user.HashPassword))
                 {
-                    throw new UnauthorizedAccessException("Invalid Credentials!!");
+                    throw new UnauthorizedAccessException("Invalid username or password.");
                 }
 
                 //Generate Jwt tokens
                 var token = _tokenService.GenerateJwtToken(user);
                 UserDto userDto = _mapper.Map<UserDto>(user);
+                if (userDto == null)
+                {
+                    throw new Exception("Failed to map user data.");
+                }
+
 
                 return new AuthResponseDto
                 {
@@ -100,10 +106,20 @@ namespace BlogAPI.Services
                     ExpiresAt = DateTime.UtcNow.AddDays(_config.GetValue<int>("JwtSettings:ExpiryDays"))
                 };
             }
+            catch (UnauthorizedAccessException ex)
+            {
+                _logger.LogWarning(ex, "Unauthorized login attempt for user: {Username}", loginDto.Username);
+                throw;
+            }
+            catch (BadHttpRequestException ex)
+            {
+                _logger.LogWarning(ex, "Bad login request for user: {Username}", loginDto.Username);
+                throw;
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to login user with username " + loginDto.Username);
-                throw new Exception("Error while user login");
+                throw;
             }
         }
         public async Task<UserDto> GetUserByIdAsync(int userId)
