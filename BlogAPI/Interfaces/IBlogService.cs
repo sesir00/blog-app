@@ -6,7 +6,7 @@ namespace BlogAPI.Interfaces
  {
      public interface IBlogService
      {
-         Task<IEnumerable<BlogDto>> GetAllAsync();
+         Task<PaginatedResponse<BlogDto>> GetAllAsync(int pageNumber, int pageSize);
          Task<BlogDto> GetByIdAsync(Guid id);
          Task CreateBlogAsync(CreateBlogRequest request, string? imagePath = null);
          Task UpdateBlogAsync(Guid id, UpdateBlogRequest request, string? ImageUrl = null);

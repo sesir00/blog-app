@@ -89,7 +89,7 @@ namespace BlogAPI.Services
                 // 🔍 Extract user ID from validated token
                 var jwtToken = (JwtSecurityToken)validatedToken;
                 var userId = int.Parse(jwtToken.Claims
-                    .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value ?? "0");
+                    .FirstOrDefault(x => x.Type == "nameid")?.Value ?? "0");
 
                 return userId; // 🆔 Return user ID for further processing (e.g. find user in DB)
             }

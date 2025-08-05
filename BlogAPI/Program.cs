@@ -44,6 +44,20 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = jwtSettings["Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]))
     };
+
+    // 👇 Add this block to read token from cookie
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var token = context.Request.Cookies["jwt"]; 
+            if (!string.IsNullOrEmpty(token))
+            {
+                context.Token = token;
+            }
+            return Task.CompletedTask;
+        }
+    };
 });
 
 // 5. Add Custom Services
@@ -58,20 +72,22 @@ builder.Services.AddProblemDetails();
 builder.Services.AddLogging();
 
 // 7. Authorization Policies
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
-    options.AddPolicy("UserOrAdmin", policy => policy.RequireRole("User", "Admin"));
-});
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+//    options.AddPolicy("UserOrAdmin", policy => policy.RequireRole("User", "Admin"));
+//});
 
 // 8. CORS (for React frontend)
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
+    {
         policy.WithOrigins("http://localhost:5173")
               .AllowAnyHeader()
               .AllowAnyMethod()
-              .AllowCredentials());
+              .AllowCredentials();
+    });
 });
 
 var app = builder.Build();
@@ -96,9 +112,11 @@ app.UseStaticFiles();
 app.UseCors("AllowReactApp");
 app.UseExceptionHandler();
 
+app.UseMiddleware<JwtCookieMiddleware>(); // Step 1: Copy jwt from cookie to header
+//app.UseMiddleware<JwtMiddleware>();       // Step 2: Validate token, attach user
+
 app.UseAuthentication();
 app.UseAuthorization();
-//app.UseMiddleware<JwtMiddleware>(); // optional
 
 app.MapControllers();
 app.Run();

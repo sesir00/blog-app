@@ -1,1 +1,3 @@
 .vs/
+BlogAPI/wwwroot/Images/*
+client/.env

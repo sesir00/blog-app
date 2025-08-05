@@ -28,7 +28,17 @@ namespace BlogAPI.Controllers
         public async Task <ActionResult<AuthResponseDto>> Login(LoginDto loginDto)
         {
             var result = await _authService.LoginAsync(loginDto);
-            return Ok(result);
+
+            //store JWT in HttpOnly cookie
+            Response.Cookies.Append("jwt", result.Token, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = false, // true : use HTTPS   ⚠️ Only for localhost/testing
+                SameSite = SameSiteMode.None, // adjust for your frontend
+                Expires = result.ExpiresAt,
+                Domain = "localhost",
+            });
+            return Ok(result); //paxi result hatauney
         }
 
         [HttpGet("me")]
@@ -51,6 +61,14 @@ namespace BlogAPI.Controllers
         {
             // With JWT, logout is handled on the client side by removing the token
             // You could implement a token blacklist here if needed
+            // Delete the JWT cookie
+            Response.Cookies.Append("jwt", "", new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = DateTimeOffset.UtcNow.AddSeconds(-1) // expire immediately
+            });
             return Ok(new { message = "Logged out successfully" });
         }
     }

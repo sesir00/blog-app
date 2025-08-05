@@ -1,45 +1,30 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios"; // ✅ Add this line
-import { Routes, Route } from "react-router-dom"; // ✅ import routing tools
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import HeroPost from "./Components/HeroPost";
-import FeaturedList from "./Components/FeaturedList";
-import Headlines from "./Components/Headlines";
-import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
+import MainLayout from "./Layouts/MainLayout";
 
-import About from "./pages/About"; // ✅ Add your route pages
-import Contact from "./pages/Contact"; // ✅ Add your route pages
+import About from "./Pages/About";
+import Contact from "./Pages/Contact";
+import Home from "./Pages/Home";
+import Login from "./Pages/Login";
+import PostDetail from "./Pages/PostDetail";
+import Register from "./Pages/Register";
 
 function App() {
-  const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get("https://localhost:44388/api/Blog")
-      .then((res) => setPosts(res.data.data))
-      .catch(console.error);
-  }, []);
-
   return (
     <>
-      <Navbar />
       <Routes>
-        <Route
-          path="/"
-          element={
-            <div className="max-w-screen-xl mx-auto px-4 py-6 grid grid-cols-[2fr_1.5fr_1fr] gap-6">
-              <div className="lg:col-span-2">
-                <HeroPost post={posts[3]} />
-              </div>              
-              <FeaturedList posts={posts} />
-            </div>
-          }
-        />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/post/:id" element={<PostDetail />} />
+        </Route>
+
+        {/* Auth pages without layout */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
-      <Footer />
     </>
   );
 }
