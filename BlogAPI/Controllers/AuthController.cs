@@ -33,11 +33,12 @@ namespace BlogAPI.Controllers
             Response.Cookies.Append("jwt", result.Token, new CookieOptions
             {
                 HttpOnly = true,
-                Secure = true, // use HTTPS
+                Secure = false, // true : use HTTPS   ⚠️ Only for localhost/testing
                 SameSite = SameSiteMode.None, // adjust for your frontend
-                Expires = result.ExpiresAt
+                Expires = result.ExpiresAt,
+                Domain = "localhost",
             });
-            return Ok(result);
+            return Ok(result); //paxi result hatauney
         }
 
         [HttpGet("me")]

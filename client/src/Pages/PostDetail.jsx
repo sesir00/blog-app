@@ -12,20 +12,21 @@ const PostDetail = () => {
 
   useEffect(() => {
     axios
-      .get(`${apiUrl}/api/Blog/${id}`)
+      .get(`${apiUrl}/api/Blog/${id}`, 
+      {
+         withCredentials: true 
+      })
       .then((res) => {
         setPost(res.data.data);
         setLoading(false);
       })
       .catch((err) => {
-        setError('Failed to load post');
+        setError("Failed to load post");
         setLoading(false);
         console.error(err);
       });
   }, [id, apiUrl]);
-  console.log(`${apiUrl}/api/Blog/${id}`);
 
-  // Set page title when post loads
   useEffect(() => {
     if (post) {
       document.title = `${post.title} - Your Blog Name`;
@@ -38,13 +39,15 @@ const PostDetail = () => {
 
   return (
     <div className="max-w-screen-md mx-auto px-4 py-10">
-      {/* Back Button */}
-      <button 
-        onClick={() => navigate(-1)}
-        className="mb-6 text-blue-600 hover:text-blue-800 transition-colors duration-200 flex items-center"
-      >
-        ← Back
-      </button>
+      {/* View More Posts Button at the Top */}
+      <div className="mb-8">
+        <button
+          onClick={() => navigate("/")}
+          className="bg-black text-white px-6 py-3 rounded-full font-medium hover:bg-gray-800 transition-all duration-200 shadow-md"
+        >
+          View More Posts
+        </button>
+      </div>
 
       {/* Post Image */}
       {post.imageUrl && (
@@ -57,35 +60,27 @@ const PostDetail = () => {
 
       {/* Post Title */}
       <h1 className="text-4xl font-bold mb-4 text-gray-900">{post.title}</h1>
-      
+
       {/* Publication Date */}
       <p className="text-sm text-gray-600 mb-8 border-b border-gray-200 pb-4">
-        Published on {new Date(post.createdAt).toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
+        Published on{" "}
+        {new Date(post.createdAt).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
         })}
       </p>
 
-      {/* Post Content with Better Formatting */}
+      {/* Post Content */}
       <div className="prose prose-lg max-w-none text-gray-800">
-        {post.content.split('\n').map((paragraph, index) => (
-          paragraph.trim() && (
-            <p key={index} className="mb-4 leading-relaxed">
-              {paragraph}
-            </p>
-          )
-        ))}
-      </div>
-
-      {/* Optional: Related Posts or Actions */}
-      <div className="mt-12 pt-8 border-t border-gray-200">
-        <button 
-          onClick={() => navigate('/')}
-          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition-colors duration-200"
-        >
-          View More Posts
-        </button>
+        {post.content.split("\n").map(
+          (paragraph, index) =>
+            paragraph.trim() && (
+              <p key={index} className="mb-4 leading-relaxed">
+                {paragraph}
+              </p>
+            )
+        )}
       </div>
     </div>
   );
