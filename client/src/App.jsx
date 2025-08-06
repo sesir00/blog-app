@@ -1,7 +1,12 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import Footer from "./Components/Footer";
 import MainLayout from "./Layouts/MainLayout";
+import AdminLayout from "./Layouts/AdminLayout";
+import Analytics from "./Admin/Pages/Analytics";
+import BlogManager from "./Admin/Pages/BlogManager"
+import UserManager from "./Admin/Pages/UserManager"
+import CommentManager from "./Admin/Pages/CommentManager"
+
 
 import About from "./Pages/About";
 import Contact from "./Pages/Contact";
@@ -14,6 +19,35 @@ function App() {
   return (
     <>
       <Routes>
+        <Route path="/admin" element=
+          {
+            <AdminLayout>
+              <Analytics />
+            </AdminLayout>
+          }
+        />
+        <Route path="/admin/blogs" element=
+          {
+            <AdminLayout>
+              <BlogManager />
+            </AdminLayout>
+          }
+        />
+        <Route path="/admin/users" element=
+          {
+            <AdminLayout>
+              <UserManager />
+            </AdminLayout>
+          }
+        />
+        <Route path="/admin/comments" element=
+          {
+            <AdminLayout>
+              <CommentManager />
+            </AdminLayout>
+          }
+        />
+
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />

@@ -51,11 +51,13 @@ const PostDetail = () => {
 
       {/* Post Image */}
       {post.imageUrl && (
-        <img
-          src={`${apiUrl}${post.imageUrl}`}
-          alt={post.title}
-          className="w-full h-auto mb-6 rounded shadow-lg"
-        />
+        <div className="overflow-hidden rounded shadow-lg mb-6">
+          <img
+            src={`${apiUrl}${post.imageUrl}`}
+            alt={post.title}
+            className="w-full h-auto transform transition-transform duration-500 hover:scale-105"
+          />
+        </div>
       )}
 
       {/* Post Title */}

@@ -3,6 +3,7 @@ import axios from "axios";
 
 export const loginUser = async ({ username, password }) => {
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
+  
 
   try {
     const response = await axios.post(
@@ -42,6 +43,7 @@ export const loginUser = async ({ username, password }) => {
 export const logoutUser = async () => {
   localStorage.removeItem("user");
   localStorage.removeItem("expiresAt");
+  //localStorage.clear(); // Clears everything we store
 
   try {
     await axios.post(
