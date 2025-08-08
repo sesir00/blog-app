@@ -76,7 +76,7 @@ namespace BlogAPI.Controllers
         }
 
         [HttpGet("{id:guid}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
 
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {

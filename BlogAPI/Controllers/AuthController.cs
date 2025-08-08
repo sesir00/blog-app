@@ -36,7 +36,6 @@ namespace BlogAPI.Controllers
                 Secure = false, // true : use HTTPS   ⚠️ Only for localhost/testing
                 SameSite = SameSiteMode.None, // adjust for your frontend
                 Expires = result.ExpiresAt,
-                Domain = "localhost",
             });
             return Ok(result); //paxi result hatauney
         }

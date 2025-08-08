@@ -10,18 +10,22 @@ const PostDetail = () => {
   const [error, setError] = useState(null);
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
     axios
-      .get(`${apiUrl}/api/Blog/${id}`, 
-      {
-         withCredentials: true 
+      .get(`${apiUrl}/api/Blog/${id}`, {
+        //  withCredentials: true
+        headers: {
+          Authorization: `Bearer ${token}`, // ✅ Send the token here
+        },
       })
       .then((res) => {
         setPost(res.data.data);
         setLoading(false);
       })
       .catch((err) => {
-        setError("Failed to load post");
+        setError(err.response?.data?.message || "Failed to load post");
         setLoading(false);
         console.error(err);
       });

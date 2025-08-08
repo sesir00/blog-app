@@ -18,12 +18,14 @@ export const loginUser = async ({ username, password }) => {
     );
 
     // Login successful
-    const { user, expiresAt } = response.data;
+    const { user, expiresAt, token } = response.data;
 
     // Note: Token is now stored in HTTP-only cookie by the server
     // We can only store non-sensitive user data in localStorage      localStorage.setItem('token', token);
     localStorage.setItem("user", JSON.stringify(user));
     localStorage.setItem("expiresAt", expiresAt);
+    localStorage.setItem("token", token); // ✅ Store JWT manually
+
 
     return { user, expiresAt }; // Success
   } catch (error) {
