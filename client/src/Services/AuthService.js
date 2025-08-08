@@ -43,19 +43,26 @@ export const loginUser = async ({ username, password }) => {
 };
 
 export const logoutUser = async () => {
-  localStorage.removeItem("user");
-  localStorage.removeItem("expiresAt");
-  //localStorage.clear(); // Clears everything we store
+  const token = localStorage.getItem("token"); // ✅ Get token before removing it
 
   try {
     await axios.post(
       "https://localhost:44388/api/Auth/logout",
-      {},
+      {}, // Empty body
       {
-        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true, // Optional if you need cookies cleared too
       }
     );
   } catch (err) {
     console.warn("Logout request failed:", err);
+  } finally {
+    // ✅ Remove after request to ensure token is sent
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("expiresAt");
+    // Or localStorage.clear();
   }
 };

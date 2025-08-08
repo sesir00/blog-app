@@ -1,0 +1,15 @@
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build-backend
+WORKDIR /src
+# - Uses the .NET SDK image to compile your backend.
+# - Sets the working directory to /src.
+
+COPY blog-app.sln ./
+COPY BlogAPI/BlogAPI.csproj BlogAPI/
+RUN dotnet restore
+# - Copies the solution and project files.
+# - Runs dotnet restore to fetch dependencies.
+
+COPY . .
+RUN dotnet publish BlogAPI/BlogAPI.csproj -c Release -o /app/publish
+# - Copies the full source code.
+# - Publishes the backend to /app/publish (optimized for production).

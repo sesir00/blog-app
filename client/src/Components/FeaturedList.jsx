@@ -1,10 +1,20 @@
+import { useNavigate } from 'react-router-dom';
+import {useEffect} from 'react'
+
 export default function FeaturedList({ posts }) {
+  const navigate = useNavigate();
   if (!posts || posts.length === 0) return null;
+
+   const handleClick = (id) => {
+    navigate(`/post/${id}`);
+  };
 
   return (
     <div className="space-y-6">
       {posts.map((post) => (
-        <div key={post.id} className="flex gap-4">
+        <div key={post.id} 
+          onClick={() => handleClick(post.id)}
+          className="flex gap-4 cursor-pointer">
           {post.imageUrl ? (
             <img
               src={`${import.meta.env.VITE_API_BASE_URL}${post.imageUrl}`}
