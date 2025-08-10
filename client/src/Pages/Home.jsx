@@ -8,6 +8,7 @@ export default function Home() {
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
   const [posts, setPosts] = useState([]);
+  const [featuredPosts, setFeaturedPosts] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [page, setPage] = useState(1);
   const pageSize = 5; // you can change this
@@ -27,9 +28,30 @@ export default function Home() {
       });
   };
 
+  const fetchFeaturedPosts = () => {
+    // Fetch the top/featured posts (always from page 1, limited number)
+    axios
+      .get(`${apiUrl}/api/Blog?pageNumber=1&pageSize=5`, 
+      {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setFeaturedPosts(res.data.data);
+      })
+      .catch((err) => {
+        console.error("Error fetching feature posts:", err);
+      });
+  };
+
   useEffect(() => {
     fetchPosts(page);
   }, [page]);
+
+   useEffect(() => {
+    // Fetch featured posts only once when component mounts
+    fetchFeaturedPosts();
+    console.log("Feature Posts",featuredPosts.posts)
+  }, []);
 
   return (
     <div className="max-w-screen-xl mx-auto px-4 py-6 grid grid-cols-[2fr_1.5fr_1fr] gap-6">
@@ -43,7 +65,7 @@ export default function Home() {
           />
         )}
       </div>
-      <FeaturedList posts={posts} />
+      <FeaturedList posts={featuredPosts} />
     </div>
   );
 }

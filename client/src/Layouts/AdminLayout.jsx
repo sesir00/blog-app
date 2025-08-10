@@ -1,17 +1,14 @@
-import { Outlet } from "react-router-dom";
-import AdminSidebar from "../Components/AdminSidebar"; // optional
-import AdminNavbar from "../Components/AdminNavbar";   // optional
+import Sidebar from "../Admin/Components/Sidebar";
+import Topbar from "../Admin/Components/Topbar";
 
-const AdminLayout = () => (
-  <div className="admin-layout">
-    <AdminNavbar />
-    <div className="admin-content">
-      <AdminSidebar />
-      <main>
-        <Outlet />
-      </main>
+export default function AdminLayout({ children }) {
+  return (
+    <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
+      <Sidebar />
+      <div className="flex-1 ml-64">
+        <Topbar />
+        <main className="p-6">{children}</main>
+      </div>
     </div>
-  </div>
-);
-
-export default AdminLayout;
+  );
+}
