@@ -30,112 +30,76 @@ namespace BlogAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
+            string? imagePath = null;
+            if (image != null)
             {
-                string? imagePath = null;
-                if (image != null)
+                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
+                var filePath = Path.Combine(_environment.WebRootPath, "images", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    var fileName = $"{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
-                    var filePath = Path.Combine(_environment.WebRootPath, "images", fileName);
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await image.CopyToAsync(stream);
-                    }
-                    imagePath = $"/images/{fileName}";
+                    await image.CopyToAsync(stream);
                 }
-                await _blogService.CreateBlogAsync(request, imagePath);
-                return Ok(new { message = "Blog post created successfully." });
+                imagePath = $"/images/{fileName}";
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = "Error creating blog post.", error = ex.Message });
-            }
+
+            await _blogService.CreateBlogAsync(request, imagePath);
+            return Ok(new { message = "Blog post created successfully." });
         }
 
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> GetAllAsync([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            try
+            var blogs = await _blogService.GetAllAsync(pageNumber, pageSize);
+            return Ok(new
             {
-                var blogs = await _blogService.GetAllAsync(pageNumber, pageSize);
-                return Ok(new 
-                { 
-                    message = "Paginated blog posts retrieved successfully.",
-                    data = blogs.Data,
-                    pageNumber = blogs.PageNumber,
-                    pageSize = blogs.PageSize,
-                    totalCount = blogs.TotalCount,
-                    totalPages = blogs.TotalPages
-                });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = "Error retrieving paginated blog posts.", error = ex.Message });
-            }
+                message = "Paginated blog posts retrieved successfully.",
+                data = blogs.Data,
+                pageNumber = blogs.PageNumber,
+                pageSize = blogs.PageSize,
+                totalCount = blogs.TotalCount,
+                totalPages = blogs.TotalPages
+            });
         }
 
         [HttpGet("{id:guid}")]
         //[AllowAnonymous]
-
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
-            try
-            {
-                var blog = await _blogService.GetByIdAsync(id);
-                return Ok(new { message = $"Successfully retrieved blog post with Id {id}.", data = blog });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = $"Error retrieving blog post with Id {id}.", error = ex.Message });
-            }
+            var blog = await _blogService.GetByIdAsync(id);
+            return Ok(new { message = $"Successfully retrieved blog post with Id {id}.", data = blog });
         }
 
         [HttpPut("{id:guid}")]
         [Authorize(Roles = "admin")]
-
         public async Task<IActionResult> UpdateBlogAsync(Guid id, [FromForm] UpdateBlogRequest request, IFormFile? image)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            try
+            string? imagePath = null;
+            if (image != null)
             {
-                string? imagePath = null;
-                if (image != null)
+                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
+                var filePath = Path.Combine(_environment.WebRootPath, "images", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))//This code opens the file path and writes the uploaded image there
                 {
-                    var fileName = $"{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
-                    var filePath = Path.Combine(_environment.WebRootPath, "images", fileName);
-                    using (var stream = new FileStream(filePath, FileMode.Create))//This code opens the file path and writes the uploaded image there
-                    {
-                        await image.CopyToAsync(stream);
-                    }
-                    imagePath = $"/images/{fileName}";  //This is the path your frontend can use to show the image later
+                    await image.CopyToAsync(stream);
                 }
-                await _blogService.UpdateBlogAsync(id, request, imagePath);
-                return Ok(new { message = $"Blog post with Id {id} updated successfully." });
+                imagePath = $"/images/{fileName}";  //This is the path your frontend can use to show the image later
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = $"Error updating blog post with Id {id}.", error = ex.Message });
-            }
+
+            await _blogService.UpdateBlogAsync(id, request, imagePath);
+            return Ok(new { message = $"Blog post with Id {id} updated successfully." });
         }
 
         [HttpDelete("{id:guid}")]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteBlogAsync(Guid id)
         {
-            try
-            {
-                await _blogService.DeleteBlogAsync(id);
-                return Ok(new { message = $"Blog post with Id {id} deleted successfully." });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = $"Error deleting blog post with Id {id}.", error = ex.Message });
-            }
+            await _blogService.DeleteBlogAsync(id);
+            return Ok(new { message = $"Blog post with Id {id} deleted successfully." });
         }
     }
 }

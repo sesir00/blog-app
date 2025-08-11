@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  blogapp:
+    build: .
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    volumes:
+      - ./BlogAPI/wwwroot/images:/app/wwwroot/images
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#Build & Run
+
+# docker-compose build
+# docker-compose up
+
+
+# API will be available at: http://localhost:5000
+
+# React build will be served from API’s / route.
+
+# Uploaded images will be persisted via the volumes mount.
+
+# I can also make it so during development, React runs in its own container with hot reload and API runs separately — so you don’t have to rebuild every time you change code.
+
+# Do you want me to make that dev-ready docker-compose.override.yml too? That’s the usual production + development setup.

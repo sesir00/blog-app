@@ -17,7 +17,7 @@ const apiUrl = import.meta.env.VITE_API_BASE_URL;
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${apiUrl}/api/Auth/users`); 
+      const res = await axios.get(`${apiUrl}/api/User?pageNumber=1&pageSize=5`); 
       setUsers(res.data);
     } catch (err) {
       console.error("Error fetching users:", err);

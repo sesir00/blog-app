@@ -65,6 +65,7 @@ builder.Services.AddScoped<IBlogService, BlogService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 // 6. Configure Exception Handling and Logging
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
