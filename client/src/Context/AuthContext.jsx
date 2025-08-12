@@ -5,12 +5,15 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
+  const storedUser = localStorage.getItem("user");        // Load user instantly from localStorage (if present)
   const [user, setUser] = useState(() => {
-      // Load user instantly from localStorage (if present)
-      const storedUser = localStorage.getItem("user");
       return storedUser ? JSON.parse(storedUser) : null;
   }); 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => {
+    // If we already have user data in localStorage, no need to block UI
+    return !localStorage.getItem("user");
+  });
+
 
   useEffect(() => {
     const verifyUser = async () => {

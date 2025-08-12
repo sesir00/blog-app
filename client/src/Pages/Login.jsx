@@ -5,9 +5,12 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Login.css";
 import { loginUser } from "../Services/AuthService";
+import { useAuth } from "../Context/AuthContext";
 
 const Login = () => {
-    const apiUrl = import.meta.env.VITE_API_BASE_URL;
+
+  const { setUser } = useAuth();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -17,7 +20,6 @@ const Login = () => {
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -71,6 +73,8 @@ const Login = () => {
         username: formData.username,
         password: formData.password,
       });
+      setUser(user); // <-- Update context instantly
+
       console.log("Login successful:", { user, expiresAt });
       console.log("Token stored in HTTP-only cookie by server");
 

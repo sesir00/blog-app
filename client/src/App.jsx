@@ -22,46 +22,46 @@ function App() {
   return (
     <>
       <Routes>
-       <Route
-    path="/admin"
-    element={
-      <ProtectedRoute allowedRoles={["admin"]}>
-        <AdminLayout>
-          <Analytics />
-        </AdminLayout>
-      </ProtectedRoute>
-    }
-  />
-  <Route
-    path="/admin/blogs"
-    element={
-      <ProtectedRoute allowedRoles={["admin"]}>
-        <AdminLayout>
-          <BlogManager />
-        </AdminLayout>
-      </ProtectedRoute>
-    }
-  />
-  <Route
-    path="/admin/users"
-    element={
-      <ProtectedRoute allowedRoles={["admin"]}>
-        <AdminLayout>
-          <UserManager />
-        </AdminLayout>
-      </ProtectedRoute>
-    }
-  />
-  <Route
-    path="/admin/comments"
-    element={
-      <ProtectedRoute allowedRoles={["admin"]}>
-        <AdminLayout>
-          <CommentManager />
-        </AdminLayout>
-      </ProtectedRoute>
-    }
-  />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminLayout>
+                <Analytics />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/blogs"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminLayout>
+                <BlogManager />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminLayout>
+                <UserManager />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/comments"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminLayout>
+                <CommentManager />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
 
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
