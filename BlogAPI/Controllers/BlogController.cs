@@ -1,8 +1,9 @@
 // Controllers/BlogController.cs
-using Microsoft.AspNetCore.Mvc;
 using BlogAPI.Contracts;
 using BlogAPI.Interfaces;
+using BlogAPI.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BlogAPI.Controllers
 {
@@ -100,6 +101,14 @@ namespace BlogAPI.Controllers
         {
             await _blogService.DeleteBlogAsync(id);
             return Ok(new { message = $"Blog post with Id {id} deleted successfully." });
+        }
+
+        [HttpGet("analytics/blogs")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> GetBlogAnalyticsAsync()
+        {
+            var blogAnalytics = await _blogService.GetBlogAnalyticsAsync();
+            return Ok(new { message = $"Blog analyytics fetched successfully.", data = blogAnalytics });
         }
     }
 }

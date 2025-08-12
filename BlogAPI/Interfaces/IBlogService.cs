@@ -1,5 +1,6 @@
 // Interfaces/IBlogService.cs
 using BlogAPI.Contracts;
+using BlogAPI.Contracts.BlogAPI.Contracts;
 using BlogAPI.Models;
 
 namespace BlogAPI.Interfaces
@@ -11,5 +12,7 @@ namespace BlogAPI.Interfaces
          Task CreateBlogAsync(CreateBlogRequest request, string? imagePath = null);
          Task UpdateBlogAsync(Guid id, UpdateBlogRequest request, string? ImageUrl = null);
          Task DeleteBlogAsync(Guid id);
+        Task<List<BlogChartDto>> GetBlogAnalyticsAsync();
+
      }
- }
+}

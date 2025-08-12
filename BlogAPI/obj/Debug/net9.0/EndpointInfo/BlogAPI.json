@@ -336,6 +336,18 @@
         }
       }
     },
+    "/api/Blog/analytics/blogs": {
+      "get": {
+        "tags": [
+          "Blog"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Comment/blog/{blogId}": {
       "post": {
         "tags": [

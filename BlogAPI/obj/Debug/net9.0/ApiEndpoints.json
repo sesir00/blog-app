@@ -202,6 +202,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "BlogAPI.Controllers.BlogController",
+    "Method": "GetBlogAnalyticsAsync",
+    "RelativePath": "api/Blog/analytics/blogs",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "BlogAPI.Controllers.CommentController",
     "Method": "UpdateCommentAsync",
     "RelativePath": "api/Comment/{commentId}",
