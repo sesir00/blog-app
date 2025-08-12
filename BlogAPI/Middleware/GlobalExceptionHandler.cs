@@ -1,6 +1,12 @@
-using System.Net;
-using Microsoft.AspNetCore.Diagnostics;
 using BlogAPI.Models;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Net;
+
+//IExceptionHandler is the built -in interface for centralized exception handling.
+//All unhandled exceptions in controllers / services are routed through this class.
 
 namespace BlogAPI.Middleware
 {
@@ -18,10 +24,12 @@ namespace BlogAPI.Middleware
             Exception exception,
             CancellationToken cancellationToken)
         {
-            _logger.LogError($"An error occurred: {exception.Message}");
+            // Log full stack trace for debugging
+            _logger.LogError(exception, "Unhandled exception occurred.");
 
             var errorResponse = new ErrorResponse
             {
+                Title = exception.GetType().Name,
                 Message = exception.Message
             };
 
@@ -43,7 +51,19 @@ namespace BlogAPI.Middleware
                     break;
             }
 
+            // Special case: ModelState errors
+            if (exception is ValidationException validationEx)
+            {
+                errorResponse.Title = "Validation Error";
+                errorResponse.Errors = new Dictionary<string, string[]>
+                {
+                    { "ValidationErrors", new[] { validationEx.Message } }
+                };
+            }
+
+            httpContext.Response.ContentType = "application/json";
             httpContext.Response.StatusCode = errorResponse.StatusCode;
+
             await httpContext.Response.WriteAsJsonAsync(errorResponse, cancellationToken);
             return true;
         }

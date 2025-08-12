@@ -1,11 +1,16 @@
-// Services/BlogService.cs
+﻿// Services/BlogService.cs
 using AutoMapper;
 using BlogAPI.AppDataContext;
 using BlogAPI.Contracts;
+using BlogAPI.Contracts.BlogAPI.Contracts;
 using BlogAPI.Interfaces;
 using BlogAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using System.ComponentModel.Design;
+using System.Globalization;
+using System.Reflection.Metadata;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BlogAPI.Services
 {
@@ -172,6 +177,53 @@ namespace BlogAPI.Services
                 throw;
             }
             
+        }
+
+        public async Task<List<BlogChartDto>> GetBlogAnalyticsAsync()
+        {
+            try
+            {
+                var now = DateTime.UtcNow;
+
+                // Step 1: Get blog counts for the last 6 months
+                var monthlyData = await _context.Blogs      //You take all blog posts in the database.
+                    .Where(b => b.CreatedAt >= now.AddMonths(-5).Date)  // last 6 months including current
+                    .GroupBy(b => new { b.CreatedAt.Year, b.CreatedAt.Month})        //You group them by the month number of their creation date (1 = January, 2 = February, etc.).
+                    .Select(g => new BlogChartDto   
+                    {                               
+                        Name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(g.Key.Month),   //For each group (g), get the month name from the number (g.Key).
+                        Posts = g.Count()                                                       //Count how many blog posts are in that month.
+                    })
+                    .ToListAsync(); // Materialize first
+
+
+                // Step 2: Build list of last 6 months (with zero counts if missing)
+                var result = Enumerable.Range(0, 6) //Loops through the last 6 months (including current month).
+                    .Select(i =>
+                    {
+                        var date = now.AddMonths(-i);
+                        var monthName = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(date.Month);
+                        return new BlogChartDto
+                        {
+                            Name = monthName,
+                            Posts = monthlyData.FirstOrDefault(m => m.Name == monthName)?.Posts ?? 0    //If a month doesn’t exist in the query results, it’s filled with 0.
+                        };
+                    })
+                    .OrderBy(dto => DateTime.ParseExact(dto.Name, "MMMM", CultureInfo.CurrentCulture).Month)  //You sort the list in month order (January → December).
+                    .ToList();      //This is done in memory, after fetching the results.
+
+                return result;
+            }
+            catch (DbUpdateException dbex)
+            {
+                _logger.LogError(dbex, "DB error while fetching blog analytic data.");
+                throw new Exception("A database error occurred while fetching blog analytic data.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to fetch blog analytic data.");
+                throw;
+            }
         }
     }
 }
