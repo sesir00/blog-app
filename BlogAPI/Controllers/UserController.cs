@@ -79,5 +79,18 @@ namespace BlogAPI.Controllers
                 message = "User deleted successfully"
             });
         }
+
+        // GET: api/user/analytics/roles
+        [HttpGet("analytics/roles")]
+        public async Task<IActionResult> GetUserRoleAnalyticsAsync()
+        {
+            var result = await _userService.GetUserRoleAnalyticsAsync();
+            return Ok(new
+            {
+                message = "User role analytics retrieved successfully.",
+                data = result
+            });
+        }
+
     }
 }

@@ -348,5 +348,15 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlogAPI.Controllers.UserController",
+    "Method": "GetUserRoleAnalyticsAsync",
+    "RelativePath": "api/User/analytics/roles",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
   }
 ]

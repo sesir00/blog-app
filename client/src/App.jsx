@@ -16,42 +16,52 @@ import Login from "./Pages/Login";
 import PostDetail from "./Pages/PostDetail";
 import Register from "./Pages/Register";
 
+import ProtectedRoute from "./Components/ProtectedRoute";
+
 function App() {
   return (
     <>
-      <Routes>        
-        <Route
-          path="/admin"
-          element={
-            <AdminLayout>
-              <Analytics />
-            </AdminLayout>
-          }
-        />
-        <Route
-          path="/admin/blogs"
-          element={
-            <AdminLayout>
-              <BlogManager />
-            </AdminLayout>
-          }
-        />
-        <Route
-          path="/admin/users"
-          element={
-            <AdminLayout>
-              <UserManager />
-            </AdminLayout>
-          }
-        />
-        <Route
-          path="/admin/comments"
-          element={
-            <AdminLayout>
-              <CommentManager />
-            </AdminLayout>
-          }
-        />
+      <Routes>
+       <Route
+    path="/admin"
+    element={
+      <ProtectedRoute allowedRoles={["admin"]}>
+        <AdminLayout>
+          <Analytics />
+        </AdminLayout>
+      </ProtectedRoute>
+    }
+  />
+  <Route
+    path="/admin/blogs"
+    element={
+      <ProtectedRoute allowedRoles={["admin"]}>
+        <AdminLayout>
+          <BlogManager />
+        </AdminLayout>
+      </ProtectedRoute>
+    }
+  />
+  <Route
+    path="/admin/users"
+    element={
+      <ProtectedRoute allowedRoles={["admin"]}>
+        <AdminLayout>
+          <UserManager />
+        </AdminLayout>
+      </ProtectedRoute>
+    }
+  />
+  <Route
+    path="/admin/comments"
+    element={
+      <ProtectedRoute allowedRoles={["admin"]}>
+        <AdminLayout>
+          <CommentManager />
+        </AdminLayout>
+      </ProtectedRoute>
+    }
+  />
 
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />

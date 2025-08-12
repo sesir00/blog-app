@@ -8,6 +8,7 @@ namespace BlogAPI.Interfaces
         Task UpdateUserAsync(int userId,UpdateUserRequest request);
         Task DeleteUserAsync(int userId);
         Task<UserDto> CreateUserAsync(CreateUserRequest request);
+        Task<List<RoleChartDto>> GetUserRoleAnalyticsAsync();
 
     }
 }

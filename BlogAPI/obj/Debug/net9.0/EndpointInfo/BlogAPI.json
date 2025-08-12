@@ -585,6 +585,18 @@
           }
         }
       }
+    },
+    "/api/User/analytics/roles": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {

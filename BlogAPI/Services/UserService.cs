@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using BlogAPI.AppDataContext;
 using BlogAPI.Contracts;
 using BlogAPI.Interfaces;
@@ -149,6 +150,30 @@ namespace BlogAPI.Services
             }
         }
 
+        public async Task<List<RoleChartDto>> GetUserRoleAnalyticsAsync()
+        {
+            try
+            {
+                var adminCount = await _context.Users.CountAsync(u => u.Role == Enum.UserRole.admin);
+                var userCount = await _context.Users.CountAsync(u => u.Role == Enum.UserRole.user);
+
+                return new List<RoleChartDto>
+                {
+                    new RoleChartDto { Name = "Admin", Value = adminCount },
+                    new RoleChartDto { Name = "User", Value = userCount }
+                };
+            }
+            catch (DbUpdateException dbex)
+            {
+                _logger.LogError(dbex, "DB error while fetching role analytic data of users.");
+                throw new Exception("A database error occurred while fetching role analytic data of users.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to fetch role analytic data of users");
+                throw;
+            }
+        }
 
     }
 }
