@@ -4,3 +4,4 @@ wwwroot\Images\1a6b3ab2-490e-4926-bcfd-d527301bbb4c.png
 wwwroot\Images\8d6e9257-1e94-4e1a-9c26-b468067e46ba.png
 wwwroot\Images\9d8cd65b-2c52-40de-a28a-16eaefe67ee2.webp
 wwwroot\Images\41b5d93f-6201-41c1-aaf4-c91477690fa0.png
+wwwroot\Images\1d66340a-f089-4613-a6bf-6f3eda5b36d9.png

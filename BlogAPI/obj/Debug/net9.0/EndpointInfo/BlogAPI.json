@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.4",
   "info": {
-    "title": "BlogAPI",
-    "version": "1.0"
+    "title": "Blog API",
+    "version": "v1"
   },
   "paths": {
     "/api/Auth/register": {
@@ -157,13 +157,11 @@
                 "type": "object",
                 "properties": {
                   "Title": {
-                    "maxLength": 100,
+                    "maxLength": 300,
                     "minLength": 0,
                     "type": "string"
                   },
                   "Content": {
-                    "maxLength": 1000,
-                    "minLength": 0,
                     "type": "string"
                   },
                   "IsPublished": {
@@ -814,6 +812,19 @@
         "type": "integer",
         "format": "int32"
       }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "description": "Enter your JWT token in the format: Bearer {your token}",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ]
 }
