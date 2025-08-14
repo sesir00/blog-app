@@ -68,7 +68,7 @@ export default function BlogManager() {
         ? await axios.put(`${apiUrl}/api/Blog/${editingId}`, formData, config)
         : await axios.post(`${apiUrl}/api/Blog`, formData, config);
 
-      toast.success(response.data?.message || "Operation successful");
+      editingId? toast.success("Blog updated successfully!") : toast.success("Blog created successfully!");
       setForm({ title: "", content: "", image: null, isPublished: false });
       setEditingId(null);
       fetchBlogs();
@@ -153,86 +153,104 @@ export default function BlogManager() {
           </button>
         </div>
       </form>
-      {/* Table */}
-      {loading ? (
-        <p>Loading blogs...</p>
-      ) : (
-        <table className="w-full text-sm border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden">
-          <thead className="bg-gray-100 dark:bg-gray-800">
-            <tr>
-              <th className="p-3 border-b dark:border-gray-700">Image</th>
-              <th className="p-3 border-b dark:border-gray-700">Title</th>
-              <th className="p-3 border-b dark:border-gray-700">Status</th>
-              <th className="p-3 border-b dark:border-gray-700 text-center">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {blogs.map((blog) => (
-              <tr
-                key={blog.id}
-                className="hover:bg-gray-50 dark:hover:bg-gray-800"
-              >
-                <td className="p-3 border-b dark:border-gray-700">
-                  {blog.imageUrl ? (
-                    <img
-                      src={`${apiUrl}${blog.imageUrl}`}
-                      alt="Blog"
-                      className="h-12 w-12 object-cover rounded-lg"
-                    />
-                  ) : (
-                    <span className="text-gray-500 text-center">No image</span>
-                  )}
-                </td>
-                <td className="p-3 border-b dark:border-gray-700 text-center">
-                  {blog.title}
-                </td>
-                <td className="p-3 border-b dark:border-gray-700 text-center">
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                      blog.isPublished
-                        ? "bg-green-100 text-green-700"
-                        : "bg-yellow-100 text-yellow-700"
-                    }`}
-                  >
-                    {blog.isPublished ? "Published" : "Draft"}
-                  </span>
-                </td>
-                <td className="p-3 border-b dark:border-gray-700 text-center space-x-2">
-                  {/* View Comments */}
-                  <button
-                    onClick={() => handleViewComments(blog.id)}
-                    className="p-2 bg-blue-100 hover:bg-blue-200 rounded-full"
-                    title="View Comments"
-                  >
-                    <MessageSquare size={16} className="text-blue-700" />
-                  </button>
-                  <button
-                    onClick={() => handleEdit(blog)}
-                    className="p-2 bg-yellow-100 hover:bg-yellow-200 rounded-full"
-                  >
-                    <Edit size={16} className="text-yellow-700" />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(blog.id)}
-                    className="p-2 bg-red-100 hover:bg-red-200 rounded-full"
-                  >
-                    <Trash2 size={16} className="text-red-700" />
-                  </button>
-                </td>
-              </tr>
-            ))}
-            {blogs.length === 0 && (
+      
+      {/* Table Container with Overflow Handling */}
+      <div className="overflow-x-auto">
+        {loading ? (
+          <p>Loading blogs...</p>
+        ) : (
+          <table className="w-full text-sm border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden table-fixed">
+            <colgroup>
+              <col className="w-20" />  {/* Image column - 80px */}
+              <col className="w-auto" /> {/* Title column - flexible, takes remaining space */}
+              <col className="w-24" />  {/* Status column - 96px */}
+              <col className="w-32" />  {/* Actions column - 128px */}
+            </colgroup>
+            <thead className="bg-gray-100 dark:bg-gray-800">
               <tr>
-                <td colSpan="4" className="p-4 text-center text-gray-500">
-                  No blogs found.
-                </td>
+                <th className="p-3 border-b dark:border-gray-700 text-left">Image</th>
+                <th className="p-3 border-b dark:border-gray-700 text-left">Title</th>
+                <th className="p-3 border-b dark:border-gray-700 text-center">Status</th>
+                <th className="p-3 border-b dark:border-gray-700 text-center">Actions</th>
               </tr>
-            )}
-          </tbody>
-        </table>
-      )}
+            </thead>
+            <tbody>
+              {blogs.map((blog) => (
+                <tr
+                  key={blog.id}
+                  className="hover:bg-gray-50 dark:hover:bg-gray-800"
+                >
+                  <td className="p-3 border-b dark:border-gray-700">
+                    <div className="flex justify-center">
+                      {blog.imageUrl ? (
+                        <img
+                          src={`${apiUrl}${blog.imageUrl}`}
+                          alt="Blog"
+                          className="h-12 w-12 object-cover rounded-lg flex-shrink-0"
+                        />
+                      ) : (
+                        <div className="h-12 w-12 bg-gray-200 dark:bg-gray-600 rounded-lg flex items-center justify-center">
+                          <span className="text-gray-500 text-xs">No img</span>
+                        </div>
+                      )}
+                    </div>
+                  </td>
+                  <td className="p-3 border-b dark:border-gray-700">
+                    <div className="truncate pr-2" title={blog.title}>
+                      {blog.title}
+                    </div>
+                  </td>
+                  <td className="p-3 border-b dark:border-gray-700 text-center">
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${
+                        blog.isPublished
+                          ? "bg-green-100 text-green-700"
+                          : "bg-yellow-100 text-yellow-700"
+                      }`}
+                    >
+                      {blog.isPublished ? "Published" : "Draft"}
+                    </span>
+                  </td>
+                  <td className="p-3 border-b dark:border-gray-700">
+                    <div className="flex justify-center space-x-1">
+                      {/* View Comments */}
+                      <button
+                        onClick={() => handleViewComments(blog.id)}
+                        className="p-2 bg-blue-100 hover:bg-blue-200 rounded-full flex-shrink-0"
+                        title="View Comments"
+                      >
+                        <MessageSquare size={14} className="text-blue-700" />
+                      </button>
+                      <button
+                        onClick={() => handleEdit(blog)}
+                        className="p-2 bg-yellow-100 hover:bg-yellow-200 rounded-full flex-shrink-0"
+                        title="Edit Blog"
+                      >
+                        <Edit size={14} className="text-yellow-700" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(blog.id)}
+                        className="p-2 bg-red-100 hover:bg-red-200 rounded-full flex-shrink-0"
+                        title="Delete Blog"
+                      >
+                        <Trash2 size={14} className="text-red-700" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {blogs.length === 0 && (
+                <tr>
+                  <td colSpan="4" className="p-8 text-center text-gray-500">
+                    No blogs found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
+      </div>
+
       {/* Pagination */}
       <div className="flex justify-center items-center gap-3 mt-6">
         <button

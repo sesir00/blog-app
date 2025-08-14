@@ -6,6 +6,9 @@ const Navbar = () => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
 
+  const isAdmin = user?.role == "admin"; // or user?.role === "Admin"
+  console.log(isAdmin)
+
   const handleLogout = async () => {
     await logoutUser();
     navigate("/login");
@@ -30,12 +33,23 @@ const Navbar = () => {
 
           {user ? (
             <>
-              <span className="text-gray-800 font-medium">
-                Hi, {user.username}
-              </span>
+              {isAdmin ? (
+                <Link
+                  to="/admin"
+                  className="text-gray-700 hover:text-black font-medium"
+                >
+                  Dashboard
+                </Link>
+              ) : (
+                <span className="text-gray-800 font-medium">
+                  Hi, {user.username}
+                </span>
+              )}
+
               <button
                 onClick={handleLogout}
-className="ml-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded"              >
+                className="ml-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded"
+              >
                 Logout
               </button>
             </>

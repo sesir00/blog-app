@@ -5,10 +5,9 @@ namespace BlogAPI.Contracts
 {
     public class UpdateBlogRequest
     {
-        [StringLength(100)]
+        [StringLength(300)]
         public string Title { get; set; }
 
-        [StringLength(1000)]
         public string Content { get; set; }
 
         public bool? IsPublished { get; set; }
