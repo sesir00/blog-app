@@ -59,7 +59,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="max-w-screen-xl mx-auto px-4 py-6 grid grid-cols-[2fr_1.5fr_1fr] gap-6">
+    <div className="max-w-screen-xl mx-auto px-4 py-6  mb-16 grid grid-cols-[2fr_1.5fr_1fr] gap-6">
       <div className="lg:col-span-2">
         <Postlist 
           posts={posts}

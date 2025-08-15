@@ -8,7 +8,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-gray-50 mt-16 border-t border-gray-200">
+    <footer className="bg-gray-50 mt-0 border-t border-gray-200">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {/* Brand Section */}
@@ -31,17 +31,17 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-3 text-gray-600">
                 <Mail size={16} />
-                <span>contact@Ballerstalk.com</span>
+                <span>ranjan@ballertalks.com</span>
               </div>
               <div className="flex items-center space-x-3 text-gray-600">
                 <Phone size={16} />
-                <span>Tel: +1 (555) 123-4567</span>
+                <span>Tel: +(977) 9843865766</span>
               </div>
               <div className="flex items-start space-x-3 text-gray-600">
                 <MapPin size={16} className="mt-1 flex-shrink-0" />
                 <div>
-                  <div>123 Sports Avenue</div>
-                  <div>New York, NY 10001, USA</div>
+                  {/* <div>123 Sports Avenue</div> */}
+                  <div>Kathmandu, Nepal</div>
                 </div>
               </div>
             </div>
