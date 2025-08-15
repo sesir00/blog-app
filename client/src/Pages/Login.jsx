@@ -8,7 +8,6 @@ import { loginUser } from "../Services/AuthService";
 import { useAuth } from "../Context/AuthContext";
 
 const Login = () => {
-
   const { setUser } = useAuth();
   const navigate = useNavigate();
 
@@ -105,11 +104,9 @@ const Login = () => {
         <div className="logo">
           {/* <span className="logo-icon">🔥</span> */}
           <span className="logo-text">
-            <img
-              src="/logo.png"
-              alt="Ballerstalk Logo"
-              className="h-10 w-auto"
-            />
+            <Link to="/" className="text-2xl font-bold text-black tracking-wide">
+              <img src="/logo.png" alt="Ballerstalk Logo" className="h-10 w-auto" />{" "}
+            </Link>
           </span>
         </div>
       </div>
