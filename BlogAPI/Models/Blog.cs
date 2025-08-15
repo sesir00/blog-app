@@ -8,9 +8,8 @@ namespace BlogAPI.Models
         [Key]
         public Guid Id { get; set; }
         [Required]
-        [StringLength(100)]
+        [StringLength(300)]
         public string Title { get; set; }
-        [StringLength(1000)]
         public string Content { get; set; }
         public bool IsPublished { get; set; }
         public string? ImageUrl { get; set; } // New property for image path or URL

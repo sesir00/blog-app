@@ -1,10 +1,14 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { logoutUser } from "../Services/AuthService";
+import { UserCircle } from "lucide-react";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
+
+  const isAdmin = user?.role == "admin"; // or user?.role === "Admin"
+  console.log(isAdmin);
 
   const handleLogout = async () => {
     await logoutUser();
@@ -30,12 +34,27 @@ const Navbar = () => {
 
           {user ? (
             <>
-              <span className="text-gray-800 font-medium">
-                Hi, {user.username}
-              </span>
+              {isAdmin ? (
+                <Link
+                  to="/admin"
+                  className="text-gray-700 hover:text-black font-medium"
+                >
+                  Dashboard
+                </Link>
+              ) : (
+                <Link
+                  to="#"
+                  className="flex items-center space-x-2 text-gray-800 hover:text-black font-medium"
+                >
+                  <UserCircle  className="h-5 w-5" />
+                  <span>{user.username}</span>
+                </Link>
+              )}
+
               <button
                 onClick={handleLogout}
-className="ml-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded"              >
+                className="ml-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded"
+              >
                 Logout
               </button>
             </>

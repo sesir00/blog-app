@@ -9,11 +9,11 @@ const MainLayout = () => {
   const shouldHideNavAndFooter = authRoutes.includes(location.pathname);
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       {!shouldHideNavAndFooter && <Navbar />}
       <Outlet />
       {!shouldHideNavAndFooter && <Footer />}
-    </>
+    </div>
   );
 };
 
