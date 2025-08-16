@@ -18,11 +18,11 @@ It supports user authentication, blog creation with images, pagination, and a re
 ### **Backend (.NET Core Web API + SQL Server)**
 - RESTful endpoints for:
   - Blog CRUD operations
-  - Authentication (JWT via HttpOnly cookies)
+  - Authentication (JWT)
   - Comments (Create/Update/Delete)
 - Database integration using Entity Framework Core
 - Image upload handling (stored in `wwwroot/images`)
-- Pagination and filtering support
+- Pagination
 - Centralized exception handling middleware
 - CORS configured for frontend communication
 
@@ -33,15 +33,12 @@ It supports user authentication, blog creation with images, pagination, and a re
 **Frontend:**
 - React (Vite)
 - Tailwind CSS
-- Axios
-- React Router DOM
 
 **Backend:**
 - .NET Core 9.0 Web API
 - Entity Framework Core
 - SQL Server
 - AutoMapper
-- JWT Authentication (HttpOnly Cookies)
 
 ---
 
@@ -99,50 +96,6 @@ cd blog-website
    ```bash
    npm run dev
    ```
-
----
-
-## 🔑 Authentication with HttpOnly Cookies
-
-This app uses **JWT tokens stored in HttpOnly cookies** for maximum security.
-
-### **Login Flow**
-- When you log in, the server issues a JWT and stores it in a secure **HttpOnly cookie**.
-- This cookie is **not accessible via JavaScript** (protecting against XSS attacks).
-- The cookie is automatically sent with each request to the backend.
-
-### **Frontend Axios Configuration**
-```js
-import axios from "axios";
-
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-  withCredentials: true // Required to send cookies with requests
-});
-
-export default api;
-```
-
-### **Backend JWT Cookie Setup**
-```csharp
-var cookieOptions = new CookieOptions
-{
-    HttpOnly = true,
-    Secure = true,
-    SameSite = SameSiteMode.None,
-    Expires = DateTime.UtcNow.AddDays(1)
-};
-
-Response.Cookies.Append("jwt_token", token, cookieOptions);
-```
-
-### **Logout Flow**
-- Backend clears the cookie using:
-```csharp
-Response.Cookies.Delete("jwt_token");
-```
-
-- Frontend simply calls `/api/Auth/logout` and updates UI.
 
 ---
 
