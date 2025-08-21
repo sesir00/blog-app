@@ -12,7 +12,7 @@ export default function Topbar() {
   return (
     <div className="flex justify-between items-center bg-white dark:bg-gray-800 p-4 shadow">
       <Link to="/" className="text-2xl font-bold text-white tracking-wide">
-          <img src="/logo-white.png" alt="Ballerstalk Logo" className="h-10 w-auto" />
+          <img src="/logo.png" alt="Ballerstalk Logo" className="h-10 w-18 ml-9" />
         </Link>
       <button
         onClick={handleLogout}
