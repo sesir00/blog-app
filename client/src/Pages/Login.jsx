@@ -105,7 +105,7 @@ const Login = () => {
           {/* <span className="logo-icon">🔥</span> */}
           <span className="logo-text">
             <Link to="/" className="text-2xl font-bold text-black tracking-wide">
-              <img src="/logo.png" alt="Ballerstalk Logo" className="h-10 w-auto" />{" "}
+              <img src="/logo.png" alt="Ballerstalk Logo" className="h-18 w-auto" />{" "}
             </Link>
           </span>
         </div>
