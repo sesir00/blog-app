@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\blog-app\\BlogAPI\\BlogAPI.csproj": {}
+    "D:\\ASP.NET\\blog-app-docker\\BlogAPI\\BlogAPI.csproj": {}
   },
   "projects": {
-    "D:\\blog-app\\BlogAPI\\BlogAPI.csproj": {
+    "D:\\ASP.NET\\blog-app-docker\\BlogAPI\\BlogAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\blog-app\\BlogAPI\\BlogAPI.csproj",
+        "projectUniqueName": "D:\\ASP.NET\\blog-app-docker\\BlogAPI\\BlogAPI.csproj",
         "projectName": "BlogAPI",
-        "projectPath": "D:\\blog-app\\BlogAPI\\BlogAPI.csproj",
+        "projectPath": "D:\\ASP.NET\\blog-app-docker\\BlogAPI\\BlogAPI.csproj",
         "packagesPath": "C:\\Users\\LENOVO LOQ\\.nuget\\packages\\",
-        "outputPath": "D:\\blog-app\\BlogAPI\\obj\\",
+        "outputPath": "D:\\ASP.NET\\blog-app-docker\\BlogAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

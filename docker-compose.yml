@@ -4,14 +4,28 @@ services:
   blogapp:
     build: .
     ports:
-      - "5000:8080"
+      - "5000:8080"   # Host:Container
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+      - DbSettings__ConnectionString=Server=db;Database=BlogDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;
     volumes:
       - ./BlogAPI/wwwroot/images:/app/wwwroot/images
+    depends_on:
+      - db   # Wait for DB
 
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong!Passw0rd
+    ports:
+      - "1432:1433"
+    volumes:
+      - mssqldata:/var/opt/mssql
 
-
+volumes:
+  mssqldata:
 
 
 

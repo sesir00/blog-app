@@ -42,11 +42,14 @@ builder.Services.AddSwaggerGen(options =>
             new string[] {}
         }
     });
-}); builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+}); 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // 2. Configure DbContext
 builder.Services.AddDbContext<BlogDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetSection("DbSettings")["ConnectionString"]));
+    options.UseSqlServer(builder.Configuration.GetSection("DbSettings")["ConnectionString"]));  
+// builder.Services.AddDbContext<BlogDbContext>(options =>
+//     options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));    
 
 // 3. Configure Identity`
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
@@ -114,7 +117,8 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins(
             "http://localhost:5173", 
-            "https://localhost:5173" // Add HTTPS variant
+            "https://localhost:5173", // Add HTTPS variant
+             "http://localhost:5000"
         )
         .AllowAnyHeader()
         .AllowAnyMethod()
@@ -128,7 +132,69 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var tokenService = scope.ServiceProvider.GetRequiredService<ITokenService>(); // ✅ Safe
-    // context.Database.Migrate(); // optionally run migration
+    var dbContext = scope.ServiceProvider.GetRequiredService<BlogDbContext>();
+    var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+
+    Console.WriteLine($"Environment: {Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}");
+    Console.WriteLine($"Connection string from config: {configuration.GetConnectionString("Default")}");
+    Console.WriteLine($"DbContext connection string: {dbContext.Database.GetConnectionString()}");
+
+    // Then your migration code...
+    //dbContext.Database.Migrate();
+
+
+    //  try
+    // {
+    //     var canConnect = dbContext.Database.CanConnect();
+    //     if (canConnect)
+    //     {
+    //         Console.WriteLine("✅ Successfully connected to the database.");
+    //     }
+    //     else
+    //     {
+    //         Console.WriteLine("❌ Failed to connect to the database.");
+    //     }
+    // }
+    // catch (Exception ex)
+    // {
+    //     Console.WriteLine($"❌ Exception during DB connection check: {ex.Message}");
+    // }
+    
+
+       const int maxRetries = 5;
+    const int delaySeconds = 5;
+    int attempt = 0;
+    bool connected = false;
+
+    while (attempt < maxRetries && !connected)
+    {
+        try
+        {
+            attempt++;
+            Console.WriteLine($"🔄 Attempt {attempt} to connect to the database...");
+
+            connected = dbContext.Database.CanConnect();
+
+            if (connected)
+            {
+                Console.WriteLine("✅ Successfully connected to the database.");
+            }
+            else
+            {
+                Console.WriteLine("❌ Failed to connect to the database.");
+                if (attempt < maxRetries)
+                    Thread.Sleep(TimeSpan.FromSeconds(delaySeconds));
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Exception during DB connection check: {ex.Message}");
+            if (attempt < maxRetries)
+                Thread.Sleep(TimeSpan.FromSeconds(delaySeconds));
+        }
+    }
+
+
 }
 
 // HTTP Pipeline
@@ -151,4 +217,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+// send everything else to index.html so React Router works
+app.MapFallbackToFile("index.html");
 app.Run();

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "e39yPKp4v0Y=",
+  "dgSpecHash": "S0ljMzyJy7E=",
   "success": true,
-  "projectFilePath": "D:\\blog-app\\BlogAPI\\BlogAPI.csproj",
+  "projectFilePath": "D:\\ASP.NET\\blog-app-docker\\BlogAPI\\BlogAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\LENOVO LOQ\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\LENOVO LOQ\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
