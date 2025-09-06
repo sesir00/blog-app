@@ -40,6 +40,21 @@ namespace BlogAPI.Controllers
             }
             try
             {
+                // 1️⃣ Call ML.NET sentiment API
+                using var httpClient = new HttpClient();
+                var payload = new { Text = request.Content };
+
+                var response = await httpClient.PostAsJsonAsync("https://localhost:61397/predict", payload);
+                if (!response.IsSuccessStatusCode)
+                    return StatusCode(500, new { message = "Sentiment analysis failed." });
+
+                var result = await response.Content.ReadFromJsonAsync<SentimentPrediction>();
+
+                // 2️⃣ Block comment if negative with confidence > 0.8
+                if(result.Sentiment  == "Negative" && result.Confidence > 0.8)
+                    return BadRequest(new { message = "Comment blocked due to negative sentiment." });
+
+                // 3️⃣ Save comment
                 await _commentService.CreateCommentAsync(blogId, request, userId);
                 return Ok(new { message = "Comment created successfully." });
             }
