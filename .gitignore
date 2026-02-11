@@ -4,12 +4,6 @@ client/.env
 .env
 
 
-
-# Discard these build artifact changes
-git restore .
-
-# Create a .gitignore file for .NET projects
-cat > .gitignore << 'EOF'
 # Build results
 [Dd]ebug/
 [Rr]elease/
@@ -18,20 +12,15 @@ x86/
 [Bb]in/
 [Oo]bj/
 
-# Visual Studio
-.vs/
-*.user
-*.suo
-*.userosscache
-*.sln.docstates
-
 # Build outputs
 *.dll
 *.exe
 *.pdb
 *.cache
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.deps.json
+*.staticwebassets.*
 EOF
-
-# Add and commit the .gitignore
-git add .gitignore
-git commit -m "Add .gitignore for .NET project"
