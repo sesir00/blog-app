@@ -46,7 +46,7 @@ const Navbar = () => {
                   to="#"
                   className="flex items-center space-x-2 text-gray-800 hover:text-black font-medium"
                 >
-                  <UserCircle  className="h-5 w-5" />
+                  <UserCircle className="h-5 w-5" />
                   <span>{user.username}</span>
                 </Link>
               )}
@@ -68,9 +68,9 @@ const Navbar = () => {
               </Link>
               <Link
                 to="/register"
-                className="ml-2 bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700"
+                className="ml-2 bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 font-medium text-sm tracking-wide shadow-sm hover:shadow-md transition-all duration-200"
               >
-                Get Started
+                Get Started →
               </Link>
             </>
           )}

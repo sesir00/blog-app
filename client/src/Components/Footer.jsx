@@ -14,7 +14,7 @@ const Footer = () => {
           {/* Brand Section */}
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-gray-800">
-              Baller<span className="text-blue-600">stalk</span>
+              Baller<span className="text-blue-600">Talks</span>
             </h3>
             <p className="text-gray-600 leading-relaxed">
               Your ultimate destination for sports news, analysis, and insights. 

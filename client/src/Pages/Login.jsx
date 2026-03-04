@@ -99,23 +99,29 @@ const Login = () => {
   };
   return (
     <div className="login-page">
-      {/* Logo */}
-      <div className="logo-container">
-        <div className="logo">
-          {/* <span className="logo-icon">🔥</span> */}
-          <span className="logo-text">
-            <Link to="/" className="text-2xl font-bold text-black tracking-wide">
-              <img src="/logo.png" alt="Ballerstalk Logo" className="h-18 w-auto" />{" "}
-            </Link>
-          </span>
-        </div>
-      </div>
       <form onSubmit={handleSubmit} className="login-form">
         <div className="login-form-container">
           {/* <div className={`alert alert-danger ${showError ? "show" : ""}`}>
           {errorMessage}                                                                          //old error message style
         </div> */}
-
+          {/* Logo */}
+          <div className="logo-container">
+            <div className="logo">
+              {/* <span className="logo-icon">🔥</span> */}
+              <span className="logo-text">
+                <Link
+                  to="/"
+                  className="text-2xl font-bold text-black tracking-wide"
+                >
+                  <img
+                    src="/logo.png"
+                    alt="BallerTalks Logo"
+                    className="h-18 w-auto"
+                  />{" "}
+                </Link>
+              </span>
+            </div>
+          </div>
           <div className="login-form">
             <h2>Login</h2>
 
@@ -164,19 +170,8 @@ const Login = () => {
             </button>
 
             <div className="login-links">
-              <a
-                href="#"
-                onClick={() => console.log("Forgot password clicked")}
-              >
-                Forgot password?
-              </a>
-              {" | "}
-
-              <Link
-                to="/register"
-                className="login-links"
-                onClick={() => console.log("Register clicked")}
-              >
+              <span>Don't have an account yet? </span>
+              <Link to="/register" className="login-links">
                 Register here
               </Link>
             </div>
@@ -186,7 +181,7 @@ const Login = () => {
 
       {/* Copyright */}
       <div className="copyright">
-        <p>Copyright © 2025 Ballerstack </p>
+        <p>Copyright © {new Date().getFullYear()} BallerTalks </p>
         <div className="footer-links">
           <Link to="/terms">Terms & Conditions</Link>
           <span> | </span>
