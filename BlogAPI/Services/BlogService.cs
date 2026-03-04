@@ -68,7 +68,13 @@ namespace BlogAPI.Services
 
                 if (blogs == null || !blogs.Any())
                 {
-                    throw new Exception("No blog posts found.");
+                    return new PaginatedResponse<BlogDto>
+                    {
+                        Data = new List<BlogDto>(),
+                        PageNumber = pageNumber,
+                        PageSize = pageSize,
+                        TotalCount = 0
+                    };
                 }
                 var blogDtos = _mapper.Map<List<BlogDto>>(blogs);
                 return new PaginatedResponse<BlogDto>

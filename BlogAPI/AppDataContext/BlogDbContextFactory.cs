@@ -17,7 +17,10 @@ namespace BlogAPI
             var connectionString = config.GetSection("DbSettings:ConnectionString").Value;
 
             var optionsBuilder = new DbContextOptionsBuilder<BlogDbContext>();
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseMySql(
+                connectionString,
+                ServerVersion.AutoDetect(connectionString)
+            );
 
             return new BlogDbContext(optionsBuilder.Options);
         }

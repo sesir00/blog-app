@@ -1,6 +1,7 @@
 ﻿using BlogAPI.AppDataContext;
 using BlogAPI.Interfaces;
 using BlogAPI.Middleware;
+using BlogAPI.Seeding;
 using BlogAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -43,10 +44,20 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 }); builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
 
 // 2. Configure DbContext
+var connectionString = builder.Configuration.GetSection("DbSettings")["ConnectionString"];
+
 builder.Services.AddDbContext<BlogDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetSection("DbSettings")["ConnectionString"]));
+    options.UseMySql(
+        connectionString,
+                //ServerVersion.AutoDetect(connectionString)
+                new MySqlServerVersion(new Version(8, 0, 0))
+    ));
+
 
 // 3. Configure Identity`
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
@@ -114,7 +125,11 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins(
             "http://localhost:5173", 
-            "https://localhost:5173" // Add HTTPS variant
+            "https://localhost:5173", // Add HTTPS variant
+            "http://ballertalks.com/", 
+            "https://ballertalks.com/",
+            "http://ballertalks-001-site1.mtempurl.com",   // 👈 temporary URL
+            "https://ballertalks-001-site1.mtempurl.com"   // 👈 HTTPS variant
         )
         .AllowAnyHeader()
         .AllowAnyMethod()
@@ -125,20 +140,29 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // This code creates a service scope to safely access dependency injection services during application startup.
-using (var scope = app.Services.CreateScope())
-{
-    var tokenService = scope.ServiceProvider.GetRequiredService<ITokenService>(); // ✅ Safe
-    // context.Database.Migrate(); // optionally run migration
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var tokenService = scope.ServiceProvider.GetRequiredService<ITokenService>(); // ✅ Safe
+//    var db = scope.ServiceProvider.GetRequiredService<BlogDbContext>();
+//    db.Database.Migrate(); // This will apply all pending migrations
+//}
 
 // HTTP Pipeline
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
 
-app.UseHttpsRedirection();
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Blog API V1");
+});
+
+await AdminSeeder.SeedAdminAsync(app.Services, app.Configuration);
+
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseCors("AllowReactApp");
@@ -150,5 +174,24 @@ app.UseMiddleware<JwtCookieMiddleware>(); // Step 1: Copy jwt from cookie to hea
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapGet("/health", () => "API is running");
+// Test DB connection endpoint
+app.MapGet("/testdb", async (BlogDbContext db) =>
+{
+    try
+    {
+        // Example: count number of users in database
+        var userCount = await db.Users.CountAsync();
+        return Results.Ok(new { message = "DB is working", users = userCount });
+    }
+    catch (Exception ex)
+    {
+        // Return the exact error if something is wrong
+        return Results.Problem(ex.Message);
+    }
+});
+
+
 app.MapControllers();
+app.MapFallbackToFile("index.html");
 app.Run();

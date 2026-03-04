@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Azure.Core;
 using BlogAPI.AppDataContext;
 using BlogAPI.Contracts;
 using BlogAPI.Interfaces;
