@@ -46,7 +46,7 @@
 
 /* ── Left hero tagline ── */
 .register-page::after {
-  content: 'JOIN THE CONVERSATION.';
+  content: 'JOIN THE\A CONVERSATION.';
   white-space: pre;
   position: fixed;
   left: 0; width: 50%; bottom: 60px;
@@ -295,13 +295,14 @@
   width: 50%;
   background:
     linear-gradient(145deg, rgba(29,78,216,0.72) 0%, rgba(30,58,138,0.45) 50%, transparent 80%),
+    url('/login.jpg') center/cover no-repeat,
     url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=900&q=80') center/cover no-repeat;
   z-index: 0;
 }
 
 /* Left hero tagline */
 .register-page::after {
-  content: 'JOIN THE\ACONVERSATION.';
+  content: 'JOIN THE\A CONVERSATION.';
   white-space: pre;
   position: fixed;
   left: 0; width: 50%; bottom: 60px;
@@ -521,7 +522,7 @@
 
 /* Left hero tagline */
 .register-page::after {
-  content: 'JOIN THE\ACONVERSATION.';
+  content: 'JOIN THE\A CONVERSATION.';
   white-space: pre;
   position: fixed;
   left: 0; width: 50%; bottom: 60px;
