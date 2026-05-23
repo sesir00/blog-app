@@ -7,9 +7,9 @@ const PostList = ({ posts, loading, error }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("Post Details:", posts);
+    // console.log("Post Details:", posts);
     posts?.forEach((post) => {
-      console.log("Full image path:", `${apiUrl}/${post.imageUrl}`);
+      // console.log("Full image path:", `${apiUrl}/${post.imageUrl}`);
     });
   }, [posts, apiUrl]); // Only logs when posts or apiUrl changes
 

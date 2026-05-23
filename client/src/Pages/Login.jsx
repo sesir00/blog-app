@@ -64,7 +64,7 @@ const Login = () => {
       return;
     }
 
-    console.log("Login Data:", formData);
+    // console.log("Login Data:", formData);
     // You can send the data to backend API here
     // For demo, show error for testing
     try {
@@ -74,8 +74,8 @@ const Login = () => {
       });
       setUser(user); // <-- Update context instantly
 
-      console.log("Login successful:", { user, expiresAt });
-      console.log("Token stored in HTTP-only cookie by server");
+      // console.log("Login successful:", { user, expiresAt });
+      // console.log("Token stored in HTTP-only cookie by server");
 
       // Redirect to dashboard or home page
       // You can use React Router's navigate here

@@ -31,7 +31,7 @@ export default function BlogManager() {
     try {
       const res = await axios.get(
         `${apiUrl}/api/Blog?pageNumber=${pageNumber}&pageSize=${pageSize}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       setBlogs(res.data.data || []);
       setPagination({
@@ -68,7 +68,9 @@ export default function BlogManager() {
         ? await axios.put(`${apiUrl}/api/Blog/${editingId}`, formData, config)
         : await axios.post(`${apiUrl}/api/Blog`, formData, config);
 
-      editingId? toast.success("Blog updated successfully!") : toast.success("Blog created successfully!");
+      editingId
+        ? toast.success("Blog updated successfully!")
+        : toast.success("Blog created successfully!");
       setForm({ title: "", content: "", image: null, isPublished: false });
       setEditingId(null);
       fetchBlogs();
@@ -86,7 +88,11 @@ export default function BlogManager() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this blog?")) return;
     try {
-      const response = await axios.delete(`${apiUrl}/api/Blog/${id}`);
+      const response = await axios.delete(`${apiUrl}/api/Blog/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       toast.success(response.data?.message || "Deleted successfully");
       fetchBlogs();
     } catch {
@@ -153,7 +159,6 @@ export default function BlogManager() {
           </button>
         </div>
       </form>
-      
       {/* Table Container with Overflow Handling */}
       <div className="overflow-x-auto">
         {loading ? (
@@ -161,17 +166,26 @@ export default function BlogManager() {
         ) : (
           <table className="w-full text-sm border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden table-fixed">
             <colgroup>
-              <col className="w-20" />  {/* Image column - 80px */}
-              <col className="w-auto" /> {/* Title column - flexible, takes remaining space */}
-              <col className="w-24" />  {/* Status column - 96px */}
-              <col className="w-32" />  {/* Actions column - 128px */}
+              <col className="w-20" /> {/* Image column - 80px */}
+              <col className="w-auto" />{" "}
+              {/* Title column - flexible, takes remaining space */}
+              <col className="w-24" /> {/* Status column - 96px */}
+              <col className="w-32" /> {/* Actions column - 128px */}
             </colgroup>
             <thead className="bg-gray-100 dark:bg-gray-800">
               <tr>
-                <th className="p-3 border-b dark:border-gray-700 text-left">Image</th>
-                <th className="p-3 border-b dark:border-gray-700 text-left">Title</th>
-                <th className="p-3 border-b dark:border-gray-700 text-center">Status</th>
-                <th className="p-3 border-b dark:border-gray-700 text-center">Actions</th>
+                <th className="p-3 border-b dark:border-gray-700 text-left">
+                  Image
+                </th>
+                <th className="p-3 border-b dark:border-gray-700 text-left">
+                  Title
+                </th>
+                <th className="p-3 border-b dark:border-gray-700 text-center">
+                  Status
+                </th>
+                <th className="p-3 border-b dark:border-gray-700 text-center">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -250,7 +264,6 @@ export default function BlogManager() {
           </table>
         )}
       </div>
-
       {/* Pagination */}
       <div className="flex justify-center items-center gap-3 mt-6">
         <button
