@@ -12,7 +12,7 @@ export default function About() {
     {
       title: "Our Mission",
       icon: <Target className="w-6 h-6 text-green-600" />,
-      text: `ur mission is to inspire and connect sports enthusiasts worldwide by providing timely, 
+      text: `Our mission is to inspire and connect sports enthusiasts worldwide by providing timely, 
       reliable, and engaging sports coverage. 
       Whether you're a casual fan or a die-hard supporter, we’re here to keep you in the game.`,
     },

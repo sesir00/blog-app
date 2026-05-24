@@ -59,8 +59,8 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="max-w-screen-xl mx-auto px-4 py-6  mb-16 grid grid-cols-[2fr_1.5fr_1fr] gap-6">
-      <div className="lg:col-span-2">
+    <div className="max-w-screen-xl mx-auto px-4 py-6 mb-16 grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6">
+      <div>
         <Postlist 
           posts={posts}
           loading={loading}
@@ -74,7 +74,9 @@ export default function Home() {
           />
         )}
       </div>
-      <FeaturedList posts={featuredPosts} />
-    </div>
+  {/* Hide featured sidebar on mobile, show on lg+ */}
+  <div className="hidden lg:block">
+    <FeaturedList posts={featuredPosts} />
+  </div>    </div>
   );
 }
